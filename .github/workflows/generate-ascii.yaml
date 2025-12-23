@@ -1,0 +1,25 @@
+name: My First workflow 
+
+on: push
+
+jobs:
+    firstjob:
+        runs-on: ubuntu-latest
+        steps: 
+        - name: Checkout Repo
+          uses: actions/checkout@v6
+
+        - name: Install Cowsay program
+          run: sudo apt-get install cowsay -y
+          
+        - name: Executie cowsay on CMD
+          run: cowsay -f dragon "Run for cover, I am a dragon. RRWWR" >> dragon.txt
+        
+        - name: Test file exists
+          run: grep -i "dragon" dragon.txt
+
+        - name: Read file
+          run: cat dragon.txt
+
+        - name: List repo files
+          run: ls -ltra
