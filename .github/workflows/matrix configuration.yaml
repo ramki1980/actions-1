@@ -11,7 +11,7 @@ jobs:
       run: docker info
 
     - name: Run Images
-      run: docker run Images
+      run: docker run images
 
   deploy-on-windows:
     runs-on: windows-latest
