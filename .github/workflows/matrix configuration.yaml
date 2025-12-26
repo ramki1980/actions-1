@@ -22,6 +22,27 @@
 #     - name: Run Images 
 #       # run: docker run hello-world
 
+# # using matrix with diff OS and images
+# name: Using matrix
+# on: 
+#   push:
+#   workflow_dispatch: 
+
+# jobs:
+#   deploy:
+#     strategy:
+#       matrix:
+#         os: [ubuntu-latest, ubuntu-20.04, windows-latest]
+#         images: [hello-world, alpine]
+#     runs-on: ${{ matrix.os}}
+#     steps:
+#     - name: ECHO docker details
+#       run: docker info
+
+#     - name: Run Images ${{ matrix.os}}
+#       run: docker run ${{ matrix.images}}
+      
+# using matrix with diff OS and images, with include/excludes
 name: Using matrix
 on: 
   push:
@@ -30,9 +51,18 @@ on:
 jobs:
   deploy:
     strategy:
+      fail-fast: false
+      max-parallel: 2
       matrix:
         os: [ubuntu-latest, ubuntu-20.04, windows-latest]
         images: [hello-world, alpine]
+        exclude:
+          - images: alpine
+            os: windows-latest
+        include:
+          - images: amd64/alpine
+            os: ubuntu-20.04
+            
     runs-on: ${{ matrix.os}}
     steps:
     - name: ECHO docker details
@@ -40,3 +70,4 @@ jobs:
 
     - name: Run Images ${{ matrix.os}}
       run: docker run ${{ matrix.images}}
+      
