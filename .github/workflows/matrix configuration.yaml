@@ -1,23 +1,42 @@
+# name: Using matrix
+# on: 
+#   push:
+#   workflow_dispatch: 
+
+# jobs:
+#   deploy-on-ubuntu:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: ECHO docker details
+#       run: docker info
+
+#     - name: Run Images
+#       run: docker run hello-world
+
+#   deploy-on-windows:
+#     runs-on: windows-latest
+#     steps:
+#     - name: ECHO docker details
+#       run: docker info
+
+#     - name: Run Images 
+#       # run: docker run hello-world
+
 name: Using matrix
 on: 
   push:
   workflow_dispatch: 
 
 jobs:
-  deploy-on-ubuntu:
-    runs-on: ubuntu-latest
+  deploy:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, ubuntu-20.4, windows-latest]
+        images: [hello-world, alpine]
+    runs-on: ${{ matrix.os}}
     steps:
     - name: ECHO docker details
       run: docker info
 
-    - name: Run Images
-      run: docker run hello-world
-
-  deploy-on-windows:
-    runs-on: windows-latest
-    steps:
-    - name: ECHO docker details
-      run: docker info
-
-    - name: Run Images 
-      run: docker run hello-world
+    - name: Run Images ${{ matrix.os}}
+      run: docker run ${{ matrix.images}}
